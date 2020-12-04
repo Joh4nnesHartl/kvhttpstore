@@ -1,4 +1,7 @@
-# kvhttpstore
+# kvhttpstore (key-value in-memory http storage)
+
+you can store any data in this storage (e.g files)
+service runs on :8080
 
 ## API
 
