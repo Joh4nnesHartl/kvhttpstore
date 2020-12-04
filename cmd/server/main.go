@@ -14,18 +14,19 @@ var (
 )
 
 func handlePost(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	key := ps.ByName("key")
+
 	value, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Body read error: %s", err.Error())
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 
 		return
 	}
 
-	key := ps.ByName("key")
 	kvstorage.Store(key, value)
 
-	w.WriteHeader(200)
+	w.WriteHeader(http.StatusOK)
 }
 
 func handleGet(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -34,12 +35,12 @@ func handleGet(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	value, ok := kvstorage.Receive(key)
 	if !ok {
 		log.Printf("No value found at key %s", key)
-		w.WriteHeader(404)
+		w.WriteHeader(http.StatusNoContent)
 
 		return
 	}
 
-	w.WriteHeader(200)
+	w.WriteHeader(http.StatusOK)
 	w.Write(value)
 }
 
