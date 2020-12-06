@@ -11,7 +11,7 @@ import (
 
 func init() {
 	wd, _ := os.Getwd()
-	storagePath = filepath.Join(wd, "test", "files")
+	storagePath = filepath.Join(wd, "testdata")
 
 	os.MkdirAll(storagePath, 0644)
 }

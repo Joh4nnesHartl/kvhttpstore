@@ -35,7 +35,12 @@ func (s KVStorage) Store(key string, value []byte) error {
 func (s KVStorage) Receive(key string) (value []byte, ok bool) {
 	filename := filepath.Join(storagePath, key)
 
-	value, err := ioutil.ReadFile(filename)
+	_, err := os.Stat(filename)
+	if err != nil {
+		return nil, false
+	}
+
+	value, err = ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, false
 	}
