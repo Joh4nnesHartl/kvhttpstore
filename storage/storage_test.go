@@ -1,11 +1,20 @@
 package storage
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func init() {
+	wd, _ := os.Getwd()
+	storagePath = filepath.Join(wd, "test", "files")
+
+	os.MkdirAll(storagePath, 0644)
+}
 
 func TestStoreRecieve(t *testing.T) {
 	testCases := []struct {
@@ -30,7 +39,7 @@ func TestStoreRecieve(t *testing.T) {
 		},
 	}
 
-	storage := make(KVStorage)
+	var storage KVStorage
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
@@ -39,7 +48,9 @@ func TestStoreRecieve(t *testing.T) {
 			value, ok := storage.Receive(tC.key)
 			require.True(t, ok)
 
-			assert.Equal(t, value, storage[tC.key])
+			assert.Equal(t, value, tC.value)
 		})
 	}
+
+	os.RemoveAll(storagePath)
 }

@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	kvstorage = make(storage.KVStorage)
+	kvstorage storage.KVStorage
 )
 
 func handlePost(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
